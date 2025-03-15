@@ -1,8 +1,9 @@
 package com.angelov00.server;
 
-import java.io.IOException;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+
 import java.net.InetSocketAddress;
-import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
@@ -20,7 +21,9 @@ public class AuthenticationServer {
 
     public static void main(String[] args) {
 
-        try(ServerSocketChannel serverSocketChannel = ServerSocketChannel.open()) {
+        SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
+
+        try (ServerSocketChannel serverSocketChannel = ServerSocketChannel.open()) {
             serverSocketChannel.bind(new InetSocketAddress(SERVER_HOST, SERVER_PORT));
             serverSocketChannel.configureBlocking(false);
 
@@ -29,10 +32,10 @@ public class AuthenticationServer {
 
             System.out.println("Server started at port " + SERVER_PORT);
 
-            while(true) {
+            while (true) {
                 int readyChannels = selector.select();
                 // select is blocking, but may still return 0
-                if(readyChannels == 0) {
+                if (readyChannels == 0) {
                     continue;
                 }
 
