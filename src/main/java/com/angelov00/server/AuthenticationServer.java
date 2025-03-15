@@ -2,6 +2,7 @@ package com.angelov00.server;
 
 import com.angelov00.server.comand.CommandHandler;
 import com.angelov00.server.repository.UserRepository;
+import com.angelov00.server.service.UserService;
 
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
@@ -20,7 +21,8 @@ public class AuthenticationServer {
     public static void main(String[] args) {
 
         UserRepository userRepository = new UserRepository();
-        CommandHandler commandHandler = new CommandHandler(userRepository);
+        UserService userService = new UserService(userRepository);
+        CommandHandler commandHandler = new CommandHandler(userService);
 
         try (ServerSocketChannel serverSocketChannel = ServerSocketChannel.open()) {
             serverSocketChannel.bind(new InetSocketAddress(SERVER_HOST, SERVER_PORT));
@@ -56,7 +58,7 @@ public class AuthenticationServer {
                         }
                         buffer.flip();
                         String command = new String(buffer.array(), 0, r);
-                        commandHandler.execute(command);
+                        commandHandler.handleCommand(command);
 
                         sc.write(buffer);
 

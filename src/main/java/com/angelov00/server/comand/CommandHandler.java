@@ -1,47 +1,64 @@
 package com.angelov00.server.comand;
 
-import com.angelov00.server.model.enums.Role;
-import com.angelov00.server.model.entity.User;
-import com.angelov00.server.repository.UserRepository;
+import com.angelov00.server.model.DTO.UserRegisterDTO;
+import com.angelov00.server.service.UserService;
 
 public class CommandHandler {
 
-    private final UserRepository userRepository;
+    private final UserService userService;
 
-    public CommandHandler(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public CommandHandler(UserService userService) {
+        this.userService = userService;
     }
 
-    public void execute(String command) {
+    public String handleCommand(String command) {
 
         String[] args = command.split(" ");
 
         switch (args[0]) {
             case "register":
-                User user = new User();
+                UserRegisterDTO userRegisterDTO = new UserRegisterDTO();
 
                 for (int i = 1; i < args.length; i += 2) {
                     switch (args[i]) {
                         case "--username":
-                            user.setUsername(args[i + 1]);
+                            userRegisterDTO.setUsername(args[i + 1]);
                             break;
                         case "--password":
-                            user.setPassword(args[i + 1]);
+                            userRegisterDTO.setPassword(args[i + 1]);
                             break;
                         case "--first-name":
-                            user.setFirstName(args[i + 1]);
+                            userRegisterDTO.setFirstName(args[i + 1]);
                             break;
                         case "--last-name":
-                            user.setLastName(args[i + 1]);
+                            userRegisterDTO.setLastName(args[i + 1]);
                             break;
                         case "--email":
-                            user.setEmail(args[i + 1]);
+                            userRegisterDTO.setEmail(args[i + 1]);
                             break;
                     }
                 }
-                user.setRole(Role.USER);
-                userRepository.save(user);
+
+                this.userService.register(userRegisterDTO);
                 break;
+
+            case "login":
+                break;
+            case "update-user":
+                break;
+            case "reset-password":
+                break;
+            case "logout":
+                break;
+            case "add-admin-user":
+                break;
+            case "remove-admin-user":
+                break;
+            case "delete-user":
+                break;
+            default:
         }
+
+        return "response";
     }
 }

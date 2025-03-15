@@ -5,6 +5,7 @@ import com.angelov00.server.model.DTO.UserRegisterDTO;
 import com.angelov00.server.model.entity.User;
 import com.angelov00.server.model.enums.Role;
 import com.angelov00.server.repository.UserRepository;
+import com.angelov00.server.util.PasswordEncoder;
 import com.google.gson.Gson;
 
 public class UserService {
@@ -17,14 +18,14 @@ public class UserService {
         this.gson = new Gson();
     }
 
-    public RegisterResponse register(UserRegisterDTO userRegisterDTO) {
+    public User register(UserRegisterDTO userRegisterDTO) {
 
         // TODO add validation
         // already existing name
 
         User user = new User();
         user.setUsername(userRegisterDTO.getUsername());
-        user.setPassword(userRegisterDTO.getPassword());
+        user.setPassword(PasswordEncoder.hashPassword(userRegisterDTO.getPassword()));
         user.setEmail(userRegisterDTO.getEmail());
         user.setFirstName(userRegisterDTO.getFirstName());
         user.setLastName(userRegisterDTO.getLastName());
