@@ -65,4 +65,24 @@ public class UserService {
         this.sessionService.invalidateSession(sessionId);
     }
 
+    public void resetPassword(String sessionId, String username, String oldPass, String newPass) {
+        //TODO
+    }
+
+    public void promoteToAdmin(String sessionId, String username) {
+        //TODO
+    }
+
+    public void demoteToUser(String sessionId, String username) {
+        //TODO
+    }
+
+    public void deleteUser(String sessionId, String username) {
+        //TODO
+    }
+
+    public boolean isAdmin(String sessionId) {
+        return this.sessionService.isAdmin(sessionId);
+    }
+
 }

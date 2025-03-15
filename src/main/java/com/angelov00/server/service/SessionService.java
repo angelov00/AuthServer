@@ -26,5 +26,11 @@ public class SessionService {
         return this.sessionRepository.isValid(sessionId);
     }
 
+    public User getUserBySessionId(String sessionId) {
+        return this.sessionRepository.getUserBySessionId(sessionId);
+    }
 
+    public boolean isAdmin(String sessionId) {
+        return this.sessionRepository.isAdmin(sessionId);
+    }
 }

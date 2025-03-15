@@ -2,6 +2,7 @@ package com.angelov00.server.repository;
 
 import com.angelov00.server.model.entity.Session;
 import com.angelov00.server.model.entity.User;
+import com.angelov00.server.model.enums.Role;
 
 import java.time.LocalDateTime;
 import java.util.Iterator;
@@ -56,4 +57,19 @@ public class InMemorySessionRepository {
     private boolean isExpired(Session session) {
         return session.getCreatedAt().plusSeconds(session.getTimeToLive()).isBefore(LocalDateTime.now());
     }
+
+    public User getUserBySessionId(String sessionId) {
+        if(sessions.containsKey(sessionId)) {
+            return sessions.get(sessionId).getUser();
+        }
+        return null;
+    }
+
+    public boolean isAdmin(String sessionId) {
+        if(sessions.containsKey(sessionId)) {
+            return sessions.get(sessionId).getUser().getRole().equals(Role.ADMIN);
+        }
+        return false;
+    }
 }
+

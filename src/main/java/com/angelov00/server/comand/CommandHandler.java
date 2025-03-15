@@ -18,32 +18,15 @@ public class CommandHandler {
 
         switch (args[0]) {
             case "register":
-                UserRegisterDTO userRegisterDTO = new UserRegisterDTO();
 
-                for (int i = 1; i < args.length; i += 2) {
-                    switch (args[i]) {
-                        case "--username":
-                            userRegisterDTO.setUsername(args[i + 1]);
-                            break;
-                        case "--password":
-                            userRegisterDTO.setPassword(args[i + 1]);
-                            break;
-                        case "--first-name":
-                            userRegisterDTO.setFirstName(args[i + 1]);
-                            break;
-                        case "--last-name":
-                            userRegisterDTO.setLastName(args[i + 1]);
-                            break;
-                        case "--email":
-                            userRegisterDTO.setEmail(args[i + 1]);
-                            break;
-                    }
-                }
-
-                response = this.userService.register(userRegisterDTO);
                 break;
 
             case "login":
+                if(args.length > 3) {
+
+                } else {
+
+                }
                 break;
             case "update-user":
                 break;
