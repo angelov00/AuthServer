@@ -59,6 +59,6 @@ public class CommandHandler {
             default:
         }
 
-        return "response";
+        return "response from command handler!";
     }
 }

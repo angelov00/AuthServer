@@ -10,6 +10,7 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class AuthenticationServer {
@@ -57,12 +58,20 @@ public class AuthenticationServer {
                             continue;
                         }
                         buffer.flip();
-                        String command = new String(buffer.array(), 0, r);
-                        commandHandler.handleCommand(command);
 
-                        sc.write(buffer);
+                        String command = new String(buffer.array(), 0, r, StandardCharsets.UTF_8);
+                        String response = commandHandler.handleCommand(command);
+                        System.out.println("Should respond with: " + response);
 
-                    } else if (key.isAcceptable()) {
+                        buffer.clear();
+                        buffer.put(response.getBytes(StandardCharsets.UTF_8));
+                        buffer.flip();
+
+                        while (buffer.hasRemaining()) {
+                            sc.write(buffer);
+                        }
+                    }
+                    else if (key.isAcceptable()) {
                         ServerSocketChannel sockChannel = (ServerSocketChannel) key.channel();
                         SocketChannel accept = sockChannel.accept();
                         accept.configureBlocking(false);

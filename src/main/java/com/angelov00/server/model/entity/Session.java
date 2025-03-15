@@ -13,14 +13,11 @@ public class Session {
 
     private long timeToLive;
 
-    private boolean active;
-
     public Session(User user, long timeToLive) {
         this.sessionId = UUID.randomUUID().toString();
         this.user = user;
         this.createdAt = LocalDateTime.now();
         this.timeToLive = timeToLive;
-        this.active = true;
     }
 
     public String getSessionId() {
@@ -53,13 +50,5 @@ public class Session {
 
     public void setTimeToLive(long timeToLive) {
         this.timeToLive = timeToLive;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
     }
 }
