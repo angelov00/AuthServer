@@ -2,8 +2,6 @@ package com.angelov00.server;
 
 import com.angelov00.server.comand.CommandHandler;
 import com.angelov00.server.repository.UserRepository;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
 
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;

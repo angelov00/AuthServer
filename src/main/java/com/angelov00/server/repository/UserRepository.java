@@ -1,6 +1,6 @@
 package com.angelov00.server.repository;
 
-import com.angelov00.server.model.User;
+import com.angelov00.server.model.entity.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;

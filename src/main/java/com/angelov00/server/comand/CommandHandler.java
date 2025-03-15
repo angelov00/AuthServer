@@ -1,7 +1,7 @@
 package com.angelov00.server.comand;
 
-import com.angelov00.server.model.Role;
-import com.angelov00.server.model.User;
+import com.angelov00.server.model.enums.Role;
+import com.angelov00.server.model.entity.User;
 import com.angelov00.server.repository.UserRepository;
 
 public class CommandHandler {

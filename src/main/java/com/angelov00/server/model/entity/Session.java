@@ -1,4 +1,4 @@
-package com.angelov00.server.model;
+package com.angelov00.server.model.entity;
 
 import java.time.LocalDateTime;
 import java.util.UUID;

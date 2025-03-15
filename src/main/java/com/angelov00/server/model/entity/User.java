@@ -1,5 +1,6 @@
-package com.angelov00.server.model;
+package com.angelov00.server.model.entity;
 
+import com.angelov00.server.model.enums.Role;
 import jakarta.persistence.*;
 
 @Entity
