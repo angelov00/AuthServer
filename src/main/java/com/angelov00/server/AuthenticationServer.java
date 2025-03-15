@@ -1,5 +1,7 @@
 package com.angelov00.server;
 
+import com.angelov00.server.comand.CommandHandler;
+import com.angelov00.server.repository.UserRepository;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
@@ -9,9 +11,7 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
 public class AuthenticationServer {
 
@@ -21,7 +21,8 @@ public class AuthenticationServer {
 
     public static void main(String[] args) {
 
-        SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
+        UserRepository userRepository = new UserRepository();
+        CommandHandler commandHandler = new CommandHandler(userRepository);
 
         try (ServerSocketChannel serverSocketChannel = ServerSocketChannel.open()) {
             serverSocketChannel.bind(new InetSocketAddress(SERVER_HOST, SERVER_PORT));
@@ -56,6 +57,9 @@ public class AuthenticationServer {
                             continue;
                         }
                         buffer.flip();
+                        String command = new String(buffer.array(), 0, r);
+                        commandHandler.execute(command);
+
                         sc.write(buffer);
 
                     } else if (key.isAcceptable()) {
