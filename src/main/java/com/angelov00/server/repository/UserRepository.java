@@ -1,20 +1,18 @@
 package com.angelov00.server.repository;
 
 import com.angelov00.server.model.entity.User;
+import com.angelov00.server.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
 
 public class UserRepository {
 
-    private static final SessionFactory sessionFactory = new Configuration()
-            .configure()
-            .addAnnotatedClass(User.class)
-            .buildSessionFactory();
+
+    private static final SessionFactory sessionFactory = HibernateUtil.getSessionFactory(); // Използване на HibernateUtil за сесията
 
     public void save(User user) {
-        try(Session session = sessionFactory.openSession()) {
+        try (Session session = sessionFactory.openSession()) {
             Transaction tx = session.beginTransaction();
             session.persist(user);
             tx.commit();
@@ -22,11 +20,11 @@ public class UserRepository {
     }
 
     public User findByUsername(String username) {
-        try(Session session = sessionFactory.openSession()) {
-            Transaction tx = session.beginTransaction();
-            final String query = "from User where username = :username";
-            return session.createQuery(query, User.class).setParameter("username", username).uniqueResult();
+        try (Session session = sessionFactory.openSession()) {
+            String query = "from User where username = :username";
+            return session.createQuery(query, User.class)
+                    .setParameter("username", username)
+                    .uniqueResult();
         }
     }
-
 }
