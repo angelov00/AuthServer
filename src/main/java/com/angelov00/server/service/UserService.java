@@ -1,6 +1,5 @@
 package com.angelov00.server.service;
 
-import com.angelov00.server.model.DTO.RegisterResponse;
 import com.angelov00.server.model.DTO.UserRegisterDTO;
 import com.angelov00.server.model.entity.User;
 import com.angelov00.server.model.enums.Role;
@@ -11,17 +10,20 @@ import com.google.gson.Gson;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final Gson gson;
+    private final SessionService sessionService;
+    //private final Gson gson;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, SessionService sessionService) {
         this.userRepository = userRepository;
-        this.gson = new Gson();
+        this.sessionService = sessionService;
+        //this.gson = new Gson();
     }
 
-    public User register(UserRegisterDTO userRegisterDTO) {
+    public String register(UserRegisterDTO userRegisterDTO) {
 
-        // TODO add validation
-        // already existing name
+        if(this.userRepository.exists(userRegisterDTO.getUsername())) {
+            throw new IllegalArgumentException("Username is already in use");
+        }
 
         User user = new User();
         user.setUsername(userRegisterDTO.getUsername());
@@ -31,6 +33,36 @@ public class UserService {
         user.setLastName(userRegisterDTO.getLastName());
         user.setRole(Role.USER);
         this.userRepository.save(user);
-        return null;
+
+        return this.sessionService.createSession(user);
     }
+
+    public String login(String username, String password) {
+
+        if(!this.userRepository.exists(username)) {
+            throw new IllegalArgumentException("Username does not exist");
+        }
+
+        User user = this.userRepository.findByUsername(username);
+
+        if(!PasswordEncoder.matches(password, user.getPassword())) {
+            throw new IllegalArgumentException("Wrong password");
+        }
+
+        return this.sessionService.createSession(user);
+    }
+
+    public String login(String sessionId) {
+
+        if(!this.sessionService.isValidSession(sessionId)) {
+            throw new IllegalArgumentException("Invalid sessionId!");
+        };
+
+        return sessionId;
+    }
+
+    public void logout(String sessionId) {
+        this.sessionService.invalidateSession(sessionId);
+    }
+
 }

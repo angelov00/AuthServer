@@ -14,6 +14,7 @@ public class CommandHandler {
     public String handleCommand(String command) {
 
         String[] args = command.split(" ");
+        String response = "";
 
         switch (args[0]) {
             case "register":
@@ -39,7 +40,7 @@ public class CommandHandler {
                     }
                 }
 
-                this.userService.register(userRegisterDTO);
+                response = this.userService.register(userRegisterDTO);
                 break;
 
             case "login":
@@ -59,6 +60,6 @@ public class CommandHandler {
             default:
         }
 
-        return "response from command handler!";
+        return response;
     }
 }

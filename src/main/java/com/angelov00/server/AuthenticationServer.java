@@ -1,7 +1,9 @@
 package com.angelov00.server;
 
 import com.angelov00.server.comand.CommandHandler;
+import com.angelov00.server.repository.InMemorySessionRepository;
 import com.angelov00.server.repository.UserRepository;
+import com.angelov00.server.service.SessionService;
 import com.angelov00.server.service.UserService;
 
 import java.net.InetSocketAddress;
@@ -22,7 +24,9 @@ public class AuthenticationServer {
     public static void main(String[] args) {
 
         UserRepository userRepository = new UserRepository();
-        UserService userService = new UserService(userRepository);
+        InMemorySessionRepository inMemorySessionRepository = new InMemorySessionRepository();
+        SessionService sessionService = new SessionService(inMemorySessionRepository);
+        UserService userService = new UserService(userRepository, sessionService);
         CommandHandler commandHandler = new CommandHandler(userService);
 
         try (ServerSocketChannel serverSocketChannel = ServerSocketChannel.open()) {

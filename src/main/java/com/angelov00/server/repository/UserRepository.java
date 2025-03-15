@@ -27,4 +27,8 @@ public class UserRepository {
                     .uniqueResult();
         }
     }
+
+    public boolean exists(String username) {
+        return this.findByUsername(username) != null;
+    }
 }
