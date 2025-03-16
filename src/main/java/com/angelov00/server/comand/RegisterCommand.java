@@ -1,14 +1,14 @@
 package com.angelov00.server.comand;
 
 import com.angelov00.server.model.DTO.UserRegisterDTO;
-import com.angelov00.server.service.UserService;
+import com.angelov00.server.service.AuthService;
 
 public class RegisterCommand implements Command {
 
-    private final UserService userService;
+    private final AuthService authService;
 
-    public RegisterCommand(UserService userService) {
-        this.userService = userService;
+    public RegisterCommand(AuthService authService) {
+        this.authService = authService;
     }
 
     @Override
@@ -35,6 +35,6 @@ public class RegisterCommand implements Command {
             }
         }
 
-        return userService.register(userRegisterDTO);
+        return authService.register(userRegisterDTO);
     }
 }

@@ -9,12 +9,12 @@ import java.util.Iterator;
 import java.util.UUID;
 import java.util.concurrent.*;
 
-public class InMemorySessionRepository {
+public class SessionRepository {
 
     private final ConcurrentHashMap<String, Session> sessions;
     private final ScheduledExecutorService executor;
 
-    public InMemorySessionRepository() {
+    public SessionRepository() {
         sessions = new ConcurrentHashMap<>();
         this.executor = Executors.newSingleThreadScheduledExecutor();
 

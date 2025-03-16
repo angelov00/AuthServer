@@ -7,6 +7,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
+import java.util.Optional;
+
 public class UserRepository {
 
     private static final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
@@ -19,11 +21,20 @@ public class UserRepository {
         }
     }
 
-    public User findByUsername(String username) {
+    public void update(User user) {
+        try(Session session = sessionFactory.openSession()) {
+            Transaction tx = session.beginTransaction();
+            session.merge(user);
+            tx.commit();
+        }
+    }
+
+    public Optional<User> findByUsername(String username) {
         try (Session session = sessionFactory.openSession()) {
-            return session.createQuery("from User where username = :username", User.class)
+            User user = session.createQuery("from User where username = :username", User.class)
                     .setParameter("username", username)
                     .uniqueResult();
+            return Optional.ofNullable(user);
         }
     }
 
@@ -61,6 +72,15 @@ public class UserRepository {
                     .setParameter("username", username)
                     .uniqueResult();
             return count != null && count > 0;
+        }
+    }
+
+    public void deleteUser(String username) {
+        try(Session session = sessionFactory.openSession()) {
+            Transaction tx = session.beginTransaction();
+            int deletedRows = session.createMutationQuery("delete from User where username = :username")
+                    .setParameter("username", username).executeUpdate();
+            tx.commit();
         }
     }
 }

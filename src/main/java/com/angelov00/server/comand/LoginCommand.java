@@ -2,14 +2,14 @@ package com.angelov00.server.comand;
 
 import com.angelov00.server.model.DTO.SessionLoginDTO;
 import com.angelov00.server.model.DTO.UserLoginDTO;
-import com.angelov00.server.service.UserService;
+import com.angelov00.server.service.AuthService;
 
 public class LoginCommand implements Command {
 
-    private final UserService userService;
+    private final AuthService authService;
 
-    public LoginCommand(UserService userService) {
-        this.userService = userService;
+    public LoginCommand(AuthService authService) {
+        this.authService = authService;
     }
 
     @Override
@@ -29,9 +29,9 @@ public class LoginCommand implements Command {
                         break;
                 }
             }
-            return this.userService.login(userLoginDTO.getUsername(), userLoginDTO.getPassword());
+            return this.authService.login(userLoginDTO.getUsername(), userLoginDTO.getPassword());
         } else {
-            return this.userService.login(args[2]);
+            return this.authService.login(args[2]);
         }
     }
 }

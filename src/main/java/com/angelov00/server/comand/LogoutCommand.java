@@ -1,18 +1,19 @@
 package com.angelov00.server.comand;
 
-import com.angelov00.server.service.UserService;
+import com.angelov00.server.service.AuthService;
 
 public class LogoutCommand implements Command {
 
-    private final UserService userService;
+    private final AuthService authService;
 
-    public LogoutCommand(UserService userService) {
-        this.userService = userService;
+    public LogoutCommand(AuthService authService) {
+        this.authService = authService;
     }
 
     @Override
     public String execute(String[] args) {
-        return this.userService.logout(args[2]);
+        this.authService.logout(args[2]);
+        return " ";
     }
 
 }

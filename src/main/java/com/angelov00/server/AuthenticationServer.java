@@ -1,10 +1,9 @@
 package com.angelov00.server;
 
 import com.angelov00.server.comand.CommandHandler;
-import com.angelov00.server.repository.InMemorySessionRepository;
+import com.angelov00.server.repository.SessionRepository;
 import com.angelov00.server.repository.UserRepository;
-import com.angelov00.server.service.SessionService;
-import com.angelov00.server.service.UserService;
+import com.angelov00.server.service.AuthService;
 
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
@@ -19,15 +18,14 @@ public class AuthenticationServer {
 
     private static final String SERVER_HOST = "localhost";
     private static final int SERVER_PORT = 8888;
-    private static final int BUFFER_SIZE = 1024;
+    private static final int BUFFER_SIZE = 2048;
 
     public static void main(String[] args) {
 
         UserRepository userRepository = new UserRepository();
-        InMemorySessionRepository inMemorySessionRepository = new InMemorySessionRepository();
-        SessionService sessionService = new SessionService(inMemorySessionRepository);
-        UserService userService = new UserService(userRepository, sessionService);
-        CommandHandler commandHandler = new CommandHandler(userService);
+        SessionRepository sessionRepository = new SessionRepository();
+        AuthService authService = new AuthService(userRepository, sessionRepository);
+        CommandHandler commandHandler = new CommandHandler(authService);
 
         try (ServerSocketChannel serverSocketChannel = ServerSocketChannel.open()) {
             serverSocketChannel.bind(new InetSocketAddress(SERVER_HOST, SERVER_PORT));
@@ -63,17 +61,13 @@ public class AuthenticationServer {
                         }
                         buffer.flip();
 
-                        String command = new String(buffer.array(), 0, r, StandardCharsets.UTF_8);
-                        String response = commandHandler.handleCommand(command);
-                        System.out.println("Should respond with: " + response);
+                        String receivedData = new String(buffer.array(), 0, buffer.limit(), StandardCharsets.UTF_8);
+                        String response = commandHandler.handleCommand(receivedData);
 
                         buffer.clear();
                         buffer.put(response.getBytes(StandardCharsets.UTF_8));
                         buffer.flip();
-
-                        while (buffer.hasRemaining()) {
-                            sc.write(buffer);
-                        }
+                        sc.write(buffer);
                     }
                     else if (key.isAcceptable()) {
                         ServerSocketChannel sockChannel = (ServerSocketChannel) key.channel();

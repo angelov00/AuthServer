@@ -3,6 +3,8 @@ package com.angelov00.server.model.entity;
 import com.angelov00.server.model.enums.Role;
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "users")
 public class User {
@@ -26,10 +28,16 @@ public class User {
     @Column
     private String email;
 
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column
+    private LocalDateTime timeout;
+
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    public User() {}
+    public User() {
+        this.timeout = null;
+    }
 
     public Long getId() {
         return id;
@@ -85,5 +93,13 @@ public class User {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public LocalDateTime getTimeout() {
+        return timeout;
+    }
+
+    public void setTimeout(LocalDateTime timeout) {
+        this.timeout = timeout;
     }
 }
