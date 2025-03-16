@@ -1,0 +1,40 @@
+package com.angelov00.server.comand;
+
+import com.angelov00.server.service.AuthService;
+
+public class RemoveAdminUserCommand implements Command {
+
+    private final AuthService authService;
+
+    public RemoveAdminUserCommand(AuthService authService) {
+        this.authService = authService;
+    }
+
+    @Override
+    public String execute(String[] args) {
+        String sessionId = null;
+        String username = null;
+        // --session-id <sessionId> --username <username>
+        for (int i = 1; i < args.length; i += 2) {
+            switch (args[i]) {
+                case "--session-id":
+                    sessionId = args[i + 1];
+                    break;
+                case "--username":
+                    username = args[i + 1];
+                    break;
+                default:
+                    break;
+            }
+        }
+        if (sessionId == null || username == null) {
+            return "Missing parameters for remove-admin-user";
+        }
+        try {
+            authService.demoteToUser(sessionId, username);
+            return "Admin rights removed from user";
+        } catch (Exception e) {
+            return e.getMessage();
+        }
+    }
+}

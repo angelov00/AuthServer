@@ -13,28 +13,35 @@ public class RegisterCommand implements Command {
 
     @Override
     public String execute(String[] args) {
-        UserRegisterDTO userRegisterDTO = new UserRegisterDTO();
+        UserRegisterDTO registerDTO = new UserRegisterDTO();
 
+        // --username <username> --password <password> --first-name <firstName> --last-name <lastName> --email <email>
         for (int i = 1; i < args.length; i += 2) {
             switch (args[i]) {
                 case "--username":
-                    userRegisterDTO.setUsername(args[i + 1]);
+                    registerDTO.setUsername(args[i + 1]);
                     break;
                 case "--password":
-                    userRegisterDTO.setPassword(args[i + 1]);
-                    break;
-                case "--first-name":
-                    userRegisterDTO.setFirstName(args[i + 1]);
-                    break;
-                case "--last-name":
-                    userRegisterDTO.setLastName(args[i + 1]);
+                    registerDTO.setPassword(args[i + 1]);
                     break;
                 case "--email":
-                    userRegisterDTO.setEmail(args[i + 1]);
+                    registerDTO.setEmail(args[i + 1]);
+                    break;
+                case "--first-name":
+                    registerDTO.setFirstName(args[i + 1]);
+                    break;
+                case "--last-name":
+                    registerDTO.setLastName(args[i + 1]);
+                    break;
+                default:
                     break;
             }
         }
 
-        return authService.register(userRegisterDTO);
+        try {
+            return authService.register(registerDTO);
+        } catch (Exception e) {
+            return e.getMessage();
+        }
     }
 }

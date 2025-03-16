@@ -14,24 +14,35 @@ public class LoginCommand implements Command {
 
     @Override
     public String execute(String[] args) {
+        String username = null;
+        String password = null;
+        String sessionId = null;
 
-        SessionLoginDTO sessionLoginDTO = new SessionLoginDTO();
-        UserLoginDTO userLoginDTO = new UserLoginDTO();
-
-        if (args.length > 3) {
-            for (int i = 1; i < args.length; i += 2) {
-                switch (args[i]) {
-                    case "--username":
-                        userLoginDTO.setUsername(args[i + 1]);
-                        break;
-                    case "--password":
-                        userLoginDTO.setPassword(args[i + 1]);
-                        break;
-                }
+        for (int i = 1; i < args.length; i += 2) {
+            switch (args[i]) {
+                case "--username":
+                    username = args[i + 1];
+                    break;
+                case "--password":
+                    password = args[i + 1];
+                    break;
+                case "--session-id":
+                    sessionId = args[i + 1];
+                    break;
+                default:
+                    break;
             }
-            return this.authService.login(userLoginDTO.getUsername(), userLoginDTO.getPassword());
-        } else {
-            return this.authService.login(args[2]);
+        }
+        try {
+            if (sessionId != null) {
+                return authService.login(sessionId);
+            } else if (username != null && password != null) {
+                return authService.login(username, password);
+            } else {
+                return "Invalid parameters for login";
+            }
+        } catch (Exception e) {
+            return e.getMessage();
         }
     }
 }
