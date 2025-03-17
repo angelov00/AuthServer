@@ -11,7 +11,7 @@ public class DeleteUserCommand implements Command {
     }
 
     @Override
-    public String execute(String[] args) {
+    public String execute(String[] args, String clientIP) {
         String sessionId = null;
         String username = null;
         // --session-id <sessionId> --username <username>

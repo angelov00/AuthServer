@@ -11,7 +11,7 @@ public class RemoveAdminUserCommand implements Command {
     }
 
     @Override
-    public String execute(String[] args) {
+    public String execute(String[] args, String clientIP) {
         String sessionId = null;
         String username = null;
         // --session-id <sessionId> --username <username>
@@ -31,7 +31,7 @@ public class RemoveAdminUserCommand implements Command {
             return "Missing parameters for remove-admin-user";
         }
         try {
-            authService.demoteToUser(sessionId, username);
+            authService.demoteToUser(sessionId, username, clientIP);
             return "Admin rights removed from user";
         } catch (Exception e) {
             return e.getMessage();

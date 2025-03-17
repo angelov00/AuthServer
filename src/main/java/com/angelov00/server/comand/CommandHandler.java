@@ -22,7 +22,7 @@ CommandHandler {
         commands.put("delete-user", new DeleteUserCommand(authService));
     }
 
-    public String handleCommand(String command) {
+    public String handleCommand(String command, String clientIP) {
         String[] args = command.split(" ");
         if (args.length == 0) {
             return "No command provided";
@@ -33,6 +33,6 @@ CommandHandler {
             return "Unknown command";
         }
 
-        return cmd.execute(args);
+        return cmd.execute(args, clientIP);
     }
 }

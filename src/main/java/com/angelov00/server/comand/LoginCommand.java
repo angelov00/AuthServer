@@ -13,7 +13,7 @@ public class LoginCommand implements Command {
     }
 
     @Override
-    public String execute(String[] args) {
+    public String execute(String[] args, String clientIP) {
         String username = null;
         String password = null;
         String sessionId = null;
@@ -35,9 +35,9 @@ public class LoginCommand implements Command {
         }
         try {
             if (sessionId != null) {
-                return authService.login(sessionId);
+                return authService.login(sessionId, clientIP);
             } else if (username != null && password != null) {
-                return authService.login(username, password);
+                return authService.login(username, password, clientIP);
             } else {
                 return "Invalid parameters for login";
             }

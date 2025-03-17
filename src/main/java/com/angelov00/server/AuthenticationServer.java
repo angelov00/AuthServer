@@ -5,6 +5,7 @@ import com.angelov00.server.repository.SessionRepository;
 import com.angelov00.server.repository.UserRepository;
 import com.angelov00.server.service.AuthService;
 
+import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
@@ -20,7 +21,7 @@ public class AuthenticationServer {
     private static final int SERVER_PORT = 8888;
     private static final int BUFFER_SIZE = 2048;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
         UserRepository userRepository = new UserRepository();
         SessionRepository sessionRepository = new SessionRepository();
@@ -62,7 +63,9 @@ public class AuthenticationServer {
                         buffer.flip();
 
                         String receivedData = new String(buffer.array(), 0, buffer.limit(), StandardCharsets.UTF_8);
-                        String response = commandHandler.handleCommand(receivedData);
+                        String clientIp = sc.getRemoteAddress().toString();
+
+                        String response = commandHandler.handleCommand(receivedData, clientIp);
 
                         buffer.clear();
                         buffer.put(response.getBytes(StandardCharsets.UTF_8));

@@ -12,7 +12,7 @@ public class RegisterCommand implements Command {
     }
 
     @Override
-    public String execute(String[] args) {
+    public String execute(String[] args, String clientIP) {
         UserRegisterDTO registerDTO = new UserRegisterDTO();
 
         // --username <username> --password <password> --first-name <firstName> --last-name <lastName> --email <email>

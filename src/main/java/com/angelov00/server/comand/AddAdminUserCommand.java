@@ -11,7 +11,7 @@ public class AddAdminUserCommand implements Command {
     }
 
     @Override
-    public String execute(String[] args) {
+    public String execute(String[] args, String clientIP) {
         String sessionId = null;
         String username = null;
         // --session-id <sessionId> --username <username>
@@ -31,7 +31,7 @@ public class AddAdminUserCommand implements Command {
             return "Missing parameters for add-admin-user";
         }
         try {
-            authService.promoteToAdmin(sessionId, username);
+            authService.promoteToAdmin(sessionId, username, clientIP);
             return "User promoted to admin";
         } catch (Exception e) {
             return e.getMessage();

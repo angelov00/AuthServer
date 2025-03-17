@@ -11,7 +11,7 @@ public class ResetPasswordCommand implements Command {
     }
 
     @Override
-    public String execute(String[] args) {
+    public String execute(String[] args, String clientIP) {
         String sessionId = null;
         String username = null;
         String oldPassword = null;

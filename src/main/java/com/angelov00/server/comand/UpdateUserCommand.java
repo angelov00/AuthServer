@@ -12,7 +12,7 @@ public class UpdateUserCommand implements Command {
     }
 
     @Override
-    public String execute(String[] args) {
+    public String execute(String[] args, String clientIP) {
         String sessionId = null;
         String newUsername = null;
         String newFirstName = null;

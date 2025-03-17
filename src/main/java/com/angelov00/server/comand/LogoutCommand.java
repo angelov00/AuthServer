@@ -11,7 +11,7 @@ public class LogoutCommand implements Command {
     }
 
     @Override
-    public String execute(String[] args) {
+    public String execute(String[] args, String clientIP) {
         String sessionId = null;
         // --session-id <sessionId>
         for (int i = 1; i < args.length; i += 2) {

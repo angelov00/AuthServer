@@ -1,5 +1,5 @@
 package com.angelov00.server.comand;
 
 public interface Command {
-    String execute(String[] args);
+    String execute(String[] args, String clientIP);
 }

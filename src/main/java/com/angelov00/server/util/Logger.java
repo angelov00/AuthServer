@@ -16,8 +16,9 @@ public class Logger implements AutoCloseable {
         this.bufferedWriter = new BufferedWriter(new FileWriter(filePath, true));
     }
 
-    public synchronized void log() {
-        // TODO
+    public synchronized void log(String message) throws IOException {
+
+        this.bufferedWriter.write(message);
     }
 
     private static String getCurrentTimeStamp() {
