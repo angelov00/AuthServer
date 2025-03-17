@@ -11,6 +11,6 @@ public class PasswordEncoder {
     }
 
     public static boolean matches(String plain, String hashedPassword) {
-        return BCrypt.checkpw(hashedPassword, plain);
+        return BCrypt.checkpw(plain, hashedPassword);
     }
 }

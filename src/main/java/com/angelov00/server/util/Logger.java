@@ -17,8 +17,9 @@ public class Logger implements AutoCloseable {
     }
 
     public synchronized void log(String message) throws IOException {
-
         this.bufferedWriter.write(message);
+        this.bufferedWriter.newLine();
+        this.bufferedWriter.flush();
     }
 
     private static String getCurrentTimeStamp() {

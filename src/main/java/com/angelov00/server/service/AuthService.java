@@ -62,6 +62,7 @@ public class AuthService {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new IllegalArgumentException("Username does not exist"));
 
+        System.out.println("Trying to login with " + username + " " + password);
         if (!PasswordEncoder.matches(password, user.getPassword())) {
             String logEntry = String.format("[%s] EVENT: failed login | USER: %s | IP: %s",
                     LocalDateTime.now(), username, clientIP);
