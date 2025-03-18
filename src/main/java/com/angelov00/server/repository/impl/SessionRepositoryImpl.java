@@ -6,7 +6,9 @@ import com.angelov00.server.model.enums.Role;
 import com.angelov00.server.repository.SessionRepository;
 
 import java.time.LocalDateTime;
+import java.util.Iterator;
 import java.util.Optional;
+import java.util.SequencedSet;
 import java.util.UUID;
 import java.util.concurrent.*;
 
@@ -43,18 +45,18 @@ public class SessionRepositoryImpl implements SessionRepository {
     public Session createSession(User user, int timeToLive) {
         String sessionId = UUID.randomUUID().toString();
         Session session = new Session(user, timeToLive);
+        session.setSessionId(sessionId);
         sessions.put(sessionId, session);
         return session;
     }
 
     @Override
     public boolean isValid(String sessionId) {
-        Session session = sessions.get(sessionId);
-        if (session != null && isExpired(session)) {
-            invalidate(sessionId);
-            return false;
-        }
-        return session != null;
+
+        if(sessions.containsKey(sessionId) && !isExpired(sessions.get(sessionId))) {
+            return true;
+        };
+        return false;
     }
 
     @Override

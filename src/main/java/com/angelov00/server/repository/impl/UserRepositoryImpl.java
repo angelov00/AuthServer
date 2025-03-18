@@ -118,7 +118,59 @@ public class UserRepositoryImpl implements UserRepository {
 
             if(timeout == null) return false;
 
-            return timeout.isBefore(LocalDateTime.now());
+            return timeout.isAfter(LocalDateTime.now());
+        }
+    }
+
+    public void removeTimeout(String username) {
+        try(Session session = sessionFactory.openSession()) {
+            Transaction tx = session.beginTransaction();
+            User user = session.createQuery("from User where username = :username", User.class)
+                    .setParameter("username", username)
+                    .uniqueResult();
+            if(user == null) {
+                return;
+            }
+
+            user.setFailedLoggedAttempts(0);
+            user.setTimeout(null);
+
+            session.merge(user);
+            tx.commit();
+        }
+    }
+
+    public void incrementFailedLoginAttempts(String username) {
+        try(Session session = sessionFactory.openSession()) {
+            Transaction tx = session.beginTransaction();
+            User user = session.createQuery("from User where username = :username", User.class)
+                    .setParameter("username", username)
+                    .uniqueResult();
+            if(user == null) {
+                return;
+            }
+
+            user.setFailedLoggedAttempts(user.getFailedLoggedAttempts() + 1);
+            user.setTimeout(null);
+
+            session.merge(user);
+            tx.commit();
+        }
+    }
+
+    public void timeoutUser(String username, LocalDateTime localDateTime) {
+        try (Session session = sessionFactory.openSession()) {
+            Transaction tx = session.beginTransaction();
+            User user = session.createQuery("from User where username = :username", User.class)
+                    .setParameter("username", username)
+                    .uniqueResult();
+            if (user == null) {
+                return;
+            }
+
+            user.setTimeout(localDateTime);
+            session.merge(user);
+            tx.commit();
         }
     }
 }

@@ -68,10 +68,22 @@ public class AuthService {
 
         if (!PasswordEncoder.matches(password, user.getPassword())) {
             logFailedLogin(username, clientIP);
+            registerFailedLogin(username);
             throw new IllegalArgumentException("Wrong password");
         }
 
+        if(this.userRepository.isTimeouted(username)) {
+            this.userRepository.removeTimeout(username);
+        }
+
         return createSession(user);
+    }
+
+    private void registerFailedLogin(String username) {
+        this.userRepository.incrementFailedLoginAttempts(username);
+        if(this.userRepository.getFailedLoginAttempts(username) > 3) {
+            this.userRepository.timeoutUser(username, LocalDateTime.now().plusSeconds(FAILED_LOGIN_TIMEOUT));
+        }
     }
 
     public String login(String sessionId) {
@@ -86,6 +98,7 @@ public class AuthService {
         if (!isValidSession(sessionId)) {
             return false;
         }
+
         invalidateSession(sessionId);
         return true;
     }

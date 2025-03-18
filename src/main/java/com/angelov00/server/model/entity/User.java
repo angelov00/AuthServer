@@ -106,4 +106,12 @@ public class User {
     public void setTimeout(LocalDateTime timeout) {
         this.timeout = timeout;
     }
+
+    public int getFailedLoggedAttempts() {
+        return failedLoggedAttempts;
+    }
+
+    public void setFailedLoggedAttempts(int failedLoggedAttempts) {
+        this.failedLoggedAttempts = failedLoggedAttempts;
+    }
 }
