@@ -1,7 +1,5 @@
 package com.angelov00.server.comand;
 
-import com.angelov00.server.model.DTO.SessionLoginDTO;
-import com.angelov00.server.model.DTO.UserLoginDTO;
 import com.angelov00.server.service.AuthService;
 
 public class LoginCommand implements Command {
@@ -33,9 +31,10 @@ public class LoginCommand implements Command {
                     break;
             }
         }
+
         try {
             if (sessionId != null) {
-                return authService.login(sessionId, clientIP);
+                return authService.login(sessionId);
             } else if (username != null && password != null) {
                 return authService.login(username, password, clientIP);
             } else {
@@ -44,5 +43,6 @@ public class LoginCommand implements Command {
         } catch (Exception e) {
             return e.getMessage();
         }
+
     }
 }

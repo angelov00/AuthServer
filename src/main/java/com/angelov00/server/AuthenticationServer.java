@@ -1,8 +1,8 @@
 package com.angelov00.server;
 
 import com.angelov00.server.comand.CommandHandler;
-import com.angelov00.server.repository.SessionRepository;
-import com.angelov00.server.repository.UserRepository;
+import com.angelov00.server.repository.impl.SessionRepositoryImpl;
+import com.angelov00.server.repository.impl.UserRepositoryImpl;
 import com.angelov00.server.service.AuthService;
 
 import java.io.IOException;
@@ -23,8 +23,8 @@ public class AuthenticationServer {
 
     public static void main(String[] args) throws IOException {
 
-        UserRepository userRepository = new UserRepository();
-        SessionRepository sessionRepository = new SessionRepository();
+        UserRepositoryImpl userRepository = new UserRepositoryImpl();
+        SessionRepositoryImpl sessionRepository = new SessionRepositoryImpl();
         AuthService authService = new AuthService(userRepository, sessionRepository);
         CommandHandler commandHandler = new CommandHandler(authService);
 
@@ -86,7 +86,6 @@ public class AuthenticationServer {
 
 
         } catch (Exception e) {
-            // TODO
             System.out.println(e.getMessage());
         }
     }

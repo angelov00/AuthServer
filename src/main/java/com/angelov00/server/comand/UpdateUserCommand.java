@@ -41,9 +41,11 @@ public class UpdateUserCommand implements Command {
                     break;
             }
         }
+
         if (sessionId == null) {
             return "Session ID is required for update-user";
         }
+
         try {
             UserUpdateDTO updateDTO = new UserUpdateDTO();
             updateDTO.setSessionId(sessionId);
@@ -55,5 +57,6 @@ public class UpdateUserCommand implements Command {
         } catch (Exception e) {
             return e.getMessage();
         }
+
     }
 }

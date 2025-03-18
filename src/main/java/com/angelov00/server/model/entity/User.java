@@ -28,6 +28,9 @@ public class User {
     @Column
     private String email;
 
+    @Column
+    private int failedLoggedAttempts;
+
     @Temporal(TemporalType.TIMESTAMP)
     @Column
     private LocalDateTime timeout;
@@ -37,6 +40,7 @@ public class User {
 
     public User() {
         this.timeout = null;
+        this.failedLoggedAttempts = 0;
     }
 
     public Long getId() {

@@ -30,11 +30,13 @@ public class DeleteUserCommand implements Command {
         if (sessionId == null || username == null) {
             return "Missing parameters for delete-user";
         }
+
         try {
             authService.deleteUser(sessionId, username);
-            return "User deleted";
+            return String.format("Deleted user %s", username);
         } catch (Exception e) {
             return e.getMessage();
         }
+
     }
 }

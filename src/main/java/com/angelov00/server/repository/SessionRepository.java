@@ -2,74 +2,20 @@ package com.angelov00.server.repository;
 
 import com.angelov00.server.model.entity.Session;
 import com.angelov00.server.model.entity.User;
-import com.angelov00.server.model.enums.Role;
 
 import java.time.LocalDateTime;
-import java.util.Iterator;
-import java.util.UUID;
-import java.util.concurrent.*;
+import java.util.Optional;
 
-public class SessionRepository {
+public interface SessionRepository {
+    void invalidate(String sessionId);
 
-    private final ConcurrentHashMap<String, Session> sessions;
-    private final ScheduledExecutorService executor;
+    boolean contains(String sessionId);
 
-    public SessionRepository() {
-        sessions = new ConcurrentHashMap<>();
-        this.executor = Executors.newSingleThreadScheduledExecutor();
+    Session createSession(User user, int timeToLive);
 
-        executor.scheduleWithFixedDelay(() -> {
-            Iterator<String> iterator = sessions.keySet().iterator();
-            while (iterator.hasNext()) {
-                String sessionId = iterator.next();
-                Session session = sessions.get(sessionId);
-                if (session != null && isExpired(session)) {
-                    iterator.remove();
-                }
-            }
-        }, 30, 5, TimeUnit.MINUTES);
-    }
+    boolean isValid(String sessionId);
 
-    public void invalidate(String sessionId) {
-        sessions.remove(sessionId);
-    }
+    Optional<User> getUserBySessionId(String sessionId);
 
-    public boolean contains(String sessionId) {
-        return sessions.containsKey(sessionId);
-    }
-
-    public String createSession(User user, int timeToLive) {
-        String sessionId = UUID.randomUUID().toString();
-        Session session = new Session(user, timeToLive);
-        sessions.put(sessionId, session);
-        return sessionId;
-    }
-
-    public boolean isValid(String sessionId) {
-        Session session = sessions.get(sessionId);
-        if (session != null && isExpired(session)) {
-            invalidate(sessionId);
-            return false;
-        }
-        return session != null;
-    }
-
-    private boolean isExpired(Session session) {
-        return session.getCreatedAt().plusSeconds(session.getTimeToLive()).isBefore(LocalDateTime.now());
-    }
-
-    public User getUserBySessionId(String sessionId) {
-        if(sessions.containsKey(sessionId)) {
-            return sessions.get(sessionId).getUser();
-        }
-        return null;
-    }
-
-    public boolean isAdmin(String sessionId) {
-        if(sessions.containsKey(sessionId)) {
-            return sessions.get(sessionId).getUser().getRole().equals(Role.ADMIN);
-        }
-        return false;
-    }
+    boolean isAdmin(String sessionId);
 }
-

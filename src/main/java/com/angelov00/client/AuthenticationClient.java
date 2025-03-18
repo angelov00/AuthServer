@@ -58,7 +58,6 @@ public class AuthenticationClient {
         int bytesRead = socketChannel.read(buffer);
 
         if(bytesRead == -1) {
-            // TODO maybe EOFException?
             throw new IOException("Server closed the connection.");
         }
         buffer.flip();

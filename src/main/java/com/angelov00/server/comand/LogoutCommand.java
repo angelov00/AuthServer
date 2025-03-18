@@ -19,9 +19,11 @@ public class LogoutCommand implements Command {
                 sessionId = args[i + 1];
             }
         }
+
         if (sessionId == null) {
             return "Session ID is required for logout";
         }
+
         boolean success = authService.logout(sessionId);
         return success ? "Logout successful!" : "Logout failed!";
     }

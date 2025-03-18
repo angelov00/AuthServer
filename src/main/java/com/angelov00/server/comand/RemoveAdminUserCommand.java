@@ -27,9 +27,11 @@ public class RemoveAdminUserCommand implements Command {
                     break;
             }
         }
+
         if (sessionId == null || username == null) {
             return "Missing parameters for remove-admin-user";
         }
+
         try {
             authService.demoteToUser(sessionId, username, clientIP);
             return "Admin rights removed from user";

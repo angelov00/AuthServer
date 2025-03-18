@@ -8,11 +8,9 @@ import java.util.Date;
 
 public class Logger implements AutoCloseable {
 
-    private final String filePath;
     private final BufferedWriter bufferedWriter;
 
     public Logger(String filePath) throws IOException {
-        this.filePath = filePath;
         this.bufferedWriter = new BufferedWriter(new FileWriter(filePath, true));
     }
 

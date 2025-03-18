@@ -38,6 +38,15 @@ public class RegisterCommand implements Command {
             }
         }
 
+        if(registerDTO.getUsername().isBlank() ||
+                registerDTO.getEmail().isEmpty() ||
+                registerDTO.getFirstName().isEmpty() ||
+                registerDTO.getLastName().isEmpty() ||
+                registerDTO.getPassword().isEmpty())  {
+
+            throw new IllegalArgumentException("Invalid register arguments");
+        }
+
         try {
             return authService.register(registerDTO);
         } catch (Exception e) {

@@ -35,14 +35,17 @@ public class ResetPasswordCommand implements Command {
                     break;
             }
         }
+
         if (sessionId == null || username == null || oldPassword == null || newPassword == null) {
             return "Missing parameters for reset-password";
         }
+
         try {
             authService.resetPassword(sessionId, username, oldPassword, newPassword);
             return "Password reset successful";
         } catch (Exception e) {
             return e.getMessage();
         }
+
     }
 }

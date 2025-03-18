@@ -5,8 +5,7 @@ import com.angelov00.server.service.AuthService;
 import java.util.HashMap;
 import java.util.Map;
 
-public class
-CommandHandler {
+public class CommandHandler {
 
     private final Map<String, Command> commands;
 
