@@ -1,8 +1,10 @@
 package com.angelov00.server;
 
 import com.angelov00.server.comand.CommandHandler;
-import com.angelov00.server.repository.impl.InMemorySessionRepositoryImpl;
+import com.angelov00.server.repository.SessionRepository;
+import com.angelov00.server.repository.UserRepository;
 import com.angelov00.server.repository.impl.DatabaseUserRepositoryImpl;
+import com.angelov00.server.repository.impl.InMemorySessionRepositoryImpl;
 import com.angelov00.server.service.AuthService;
 
 import java.io.IOException;
@@ -23,8 +25,8 @@ public class AuthenticationServer {
 
     public static void main(String[] args) throws IOException {
 
-        DatabaseUserRepositoryImpl userRepository = new DatabaseUserRepositoryImpl();
-        InMemorySessionRepositoryImpl sessionRepository = new InMemorySessionRepositoryImpl();
+        UserRepository userRepository = new DatabaseUserRepositoryImpl();
+        SessionRepository sessionRepository = new InMemorySessionRepositoryImpl();
         AuthService authService = new AuthService(userRepository, sessionRepository);
         CommandHandler commandHandler = new CommandHandler(authService);
 

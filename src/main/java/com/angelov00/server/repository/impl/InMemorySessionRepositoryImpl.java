@@ -5,7 +5,6 @@ import com.angelov00.server.model.entity.User;
 import com.angelov00.server.model.enums.Role;
 import com.angelov00.server.repository.SessionRepository;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.*;
@@ -50,11 +49,7 @@ public class InMemorySessionRepositoryImpl implements SessionRepository {
 
     @Override
     public boolean isValid(String sessionId) {
-
-        if(sessions.containsKey(sessionId) && !isExpired(sessions.get(sessionId))) {
-            return true;
-        }
-        return false;
+        return sessions.containsKey(sessionId) && !isExpired(sessions.get(sessionId));
     }
 
     @Override
@@ -69,11 +64,7 @@ public class InMemorySessionRepositoryImpl implements SessionRepository {
                 .orElse(false);
     }
 
-    private boolean isExpired(Session session) {
-        LocalDateTime now = LocalDateTime.now();
-        return session.getCreatedAt().plusSeconds(session.getTimeToLive()).isBefore(now);
-    }
-
+    @Override
     public void deleteSessionByUsername(String username) {
         sessions.values().removeIf(session -> session.getUser().getUsername().equals(username));
     }

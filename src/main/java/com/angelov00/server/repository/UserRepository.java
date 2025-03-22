@@ -2,6 +2,7 @@ package com.angelov00.server.repository;
 
 import com.angelov00.server.model.entity.User;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 public interface UserRepository {
@@ -24,4 +25,10 @@ public interface UserRepository {
     int getFailedLoginAttempts(String username);
 
     boolean isTimeouted(String username);
+
+    void removeTimeout(String username);
+
+    void incrementFailedLoginAttempts(String username);
+
+    void timeoutUser(String username, LocalDateTime localDateTime);
 }

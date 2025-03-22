@@ -122,6 +122,7 @@ public class DatabaseUserRepositoryImpl implements UserRepository {
         }
     }
 
+    @Override
     public void removeTimeout(String username) {
         try(Session session = sessionFactory.openSession()) {
             Transaction tx = session.beginTransaction();
@@ -140,6 +141,7 @@ public class DatabaseUserRepositoryImpl implements UserRepository {
         }
     }
 
+    @Override
     public void incrementFailedLoginAttempts(String username) {
         try(Session session = sessionFactory.openSession()) {
             Transaction tx = session.beginTransaction();
@@ -158,6 +160,7 @@ public class DatabaseUserRepositoryImpl implements UserRepository {
         }
     }
 
+    @Override
     public void timeoutUser(String username, LocalDateTime localDateTime) {
         try (Session session = sessionFactory.openSession()) {
             Transaction tx = session.beginTransaction();

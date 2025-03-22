@@ -4,8 +4,8 @@ import com.angelov00.server.model.DTO.UserRegisterDTO;
 import com.angelov00.server.model.DTO.UserUpdateDTO;
 import com.angelov00.server.model.entity.User;
 import com.angelov00.server.model.enums.Role;
-import com.angelov00.server.repository.impl.InMemorySessionRepositoryImpl;
-import com.angelov00.server.repository.impl.DatabaseUserRepositoryImpl;
+import com.angelov00.server.repository.SessionRepository;
+import com.angelov00.server.repository.UserRepository;
 import com.angelov00.server.util.PasswordEncoder;
 import com.angelov00.server.util.Logger;
 
@@ -20,11 +20,11 @@ public class AuthService {
     private static final int SESSION_TIME_TO_LIVE = 3600; // seconds
     private static final String LOG_FILE_PATH = "C:\\Users\\Martin\\Desktop\\log.txt";
 
-    private final DatabaseUserRepositoryImpl userRepository;
-    private final InMemorySessionRepositoryImpl sessionRepository;
+    private final UserRepository userRepository;
+    private final SessionRepository sessionRepository;
     private final Logger logger;
 
-    public AuthService(DatabaseUserRepositoryImpl userRepository, InMemorySessionRepositoryImpl sessionRepository) throws IOException {
+    public AuthService(UserRepository userRepository, SessionRepository sessionRepository) throws IOException {
         this.userRepository = userRepository;
         this.sessionRepository = sessionRepository;
         this.logger = new Logger(LOG_FILE_PATH);
@@ -73,11 +73,11 @@ public class AuthService {
             throw new IllegalArgumentException("Wrong password");
         }
 
-        // TODO remove previous session (if such exists)
-
         if(this.userRepository.isTimeouted(username)) {
             this.userRepository.removeTimeout(username);
         }
+
+        this.sessionRepository.deleteSessionByUsername(username);
 
         return createSession(user);
     }
