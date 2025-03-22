@@ -11,7 +11,7 @@ import org.hibernate.Transaction;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-public class UserRepositoryImpl implements UserRepository {
+public class DatabaseUserRepositoryImpl implements UserRepository {
 
     private static final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 

@@ -6,17 +6,15 @@ import com.angelov00.server.model.enums.Role;
 import com.angelov00.server.repository.SessionRepository;
 
 import java.time.LocalDateTime;
-import java.util.Iterator;
 import java.util.Optional;
-import java.util.SequencedSet;
 import java.util.UUID;
 import java.util.concurrent.*;
 
-public class SessionRepositoryImpl implements SessionRepository {
+public class InMemorySessionRepositoryImpl implements SessionRepository {
 
     private final ConcurrentHashMap<String, Session> sessions;
 
-    public SessionRepositoryImpl() {
+    public InMemorySessionRepositoryImpl() {
         sessions = new ConcurrentHashMap<>();
 
         try(ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor()) {
@@ -55,7 +53,7 @@ public class SessionRepositoryImpl implements SessionRepository {
 
         if(sessions.containsKey(sessionId) && !isExpired(sessions.get(sessionId))) {
             return true;
-        };
+        }
         return false;
     }
 

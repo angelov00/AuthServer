@@ -3,7 +3,6 @@ package com.angelov00.server.repository;
 import com.angelov00.server.model.entity.Session;
 import com.angelov00.server.model.entity.User;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 public interface SessionRepository {
