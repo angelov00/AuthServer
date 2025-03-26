@@ -90,20 +90,19 @@ public class AuthService {
     }
 
     public String login(String sessionId) {
-        if (!isValidSession(sessionId)) {
+        if (!sessionRepository.isValid(sessionId)) {
             throw new IllegalArgumentException("Invalid sessionId!");
         }
 
         return sessionId;
     }
 
-    public boolean logout(String sessionId) {
-        if (!isValidSession(sessionId)) {
-            return false;
+    public void logout(String sessionId) {
+        if (!sessionRepository.isValid(sessionId)) {
+            throw new IllegalArgumentException("Invalid sessionId!");
         }
 
-        invalidateSession(sessionId);
-        return true;
+        sessionRepository.invalidate(sessionId);
     }
 
     public void resetPassword(String sessionId, String username, String oldPass, String newPass) {
@@ -178,16 +177,8 @@ public class AuthService {
         userRepository.deleteUser(username);
     }
 
-    private void invalidateSession(String sessionId) {
-        sessionRepository.invalidate(sessionId);
-    }
-
     private String createSession(User user) {
         return sessionRepository.createSession(user, SESSION_TIME_TO_LIVE).getSessionId();
-    }
-
-    private boolean isValidSession(String sessionId) {
-        return sessionRepository.isValid(sessionId);
     }
 
     private User validateSession(String sessionId) {
