@@ -23,7 +23,7 @@ public class LogoutCommand implements Command {
         if (sessionId == null) {
             return "Session ID is required for logout";
         }
-   ;
+
         try {
             authService.logout(sessionId);
             return "Logout successful!";

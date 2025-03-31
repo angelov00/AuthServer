@@ -18,16 +18,15 @@ public class AuthService {
 
     private static final int FAILED_LOGIN_TIMEOUT = 120;
     private static final int SESSION_TIME_TO_LIVE = 3600; // seconds
-    private static final String LOG_FILE_PATH = "C:\\Users\\Martin\\Desktop\\log.txt";
 
     private final UserRepository userRepository;
     private final SessionRepository sessionRepository;
     private final Logger logger;
 
-    public AuthService(UserRepository userRepository, SessionRepository sessionRepository) throws IOException {
+    public AuthService(UserRepository userRepository, SessionRepository sessionRepository, Logger logger) throws IOException {
         this.userRepository = userRepository;
         this.sessionRepository = sessionRepository;
-        this.logger = new Logger(LOG_FILE_PATH);
+        this.logger = logger;
     }
 
     public String register(UserRegisterDTO userRegisterDTO) {

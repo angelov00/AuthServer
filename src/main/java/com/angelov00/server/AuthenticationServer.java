@@ -6,6 +6,7 @@ import com.angelov00.server.repository.UserRepository;
 import com.angelov00.server.repository.impl.DatabaseUserRepositoryImpl;
 import com.angelov00.server.repository.impl.InMemorySessionRepositoryImpl;
 import com.angelov00.server.service.AuthService;
+import com.angelov00.server.util.Logger;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -19,6 +20,7 @@ import java.util.*;
 
 public class AuthenticationServer {
 
+    private static final String LOG_FILE_PATH = "C:\\Users\\Martin\\Desktop\\log.txt";
     private static final String SERVER_HOST = "localhost";
     private static final int SERVER_PORT = 8888;
     private static final int BUFFER_SIZE = 2048;
@@ -27,7 +29,9 @@ public class AuthenticationServer {
 
         UserRepository userRepository = new DatabaseUserRepositoryImpl();
         SessionRepository sessionRepository = new InMemorySessionRepositoryImpl();
-        AuthService authService = new AuthService(userRepository, sessionRepository);
+        Logger logger = new Logger(LOG_FILE_PATH);
+
+        AuthService authService = new AuthService(userRepository, sessionRepository, logger);
         CommandHandler commandHandler = new CommandHandler(authService);
 
         try (ServerSocketChannel serverSocketChannel = ServerSocketChannel.open()) {

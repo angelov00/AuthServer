@@ -3,11 +3,16 @@ package com.angelov00.server.model.entity;
 import com.angelov00.server.model.enums.Role;
 import jakarta.persistence.*;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -113,5 +118,20 @@ public class User {
 
     public void setFailedLoggedAttempts(int failedLoggedAttempts) {
         this.failedLoggedAttempts = failedLoggedAttempts;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", failedLoggedAttempts=" + failedLoggedAttempts +
+                ", timeout=" + timeout +
+                ", role=" + role +
+                '}';
     }
 }
